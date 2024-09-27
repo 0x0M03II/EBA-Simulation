@@ -1,6 +1,8 @@
 > **_NOTE:_**  This is a work in progress and is NOT meant to compile at this time.
 > DPDK integration is not complete, and a network topology has not
-> been created yet.  Furthermore, the DPDK processing behavior has
+> been created yet.
+>
+> Furthermore, the DPDK processing behavior has
 > not been developed and the EBA::NodeManager::NodeManager() should
 > use mbuf instead of the simulated vector buffer.
 > Lastly, the EBA operations don't exist, but this isn't necessary for
