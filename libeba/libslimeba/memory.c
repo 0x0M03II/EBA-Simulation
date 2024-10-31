@@ -145,7 +145,7 @@ static void shared_memory_allocation_matrix(manmemory_manager_state *state)
     if (bufftab->no_entries == 0 || bufftab->no_entries == NULL) {
         bufftab->no_entries = 0;
 
-        memset(bufftab->allocated_buffers, NULL, 
+        memset(bufftab->allocated_buffers, 0, 
                 sizeof(bufftab->allocated_buffers));
     }
 
