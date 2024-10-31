@@ -1,0 +1,13 @@
+# GIT IGNORE
+
+.vscode/
+.settings/
+out/
+setup/
+Simulations/
+.cproject
+.nedexclusions
+.nedfolders
+.oppbuildspec
+.project
+Makefile
