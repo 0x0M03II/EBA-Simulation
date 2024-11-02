@@ -149,6 +149,8 @@ static void shared_memory_allocation_matrix(manmemory_manager_state *state)
                 sizeof(bufftab->allocated_buffers));
     }
 
+    state->tbl_index = &bufftab;
+
     buffer_generate_block_count(c514,   BUFFER_514);    // 514  bytes
     buffer_generate_block_count(c1024,  BUFFER_1024);   // 1024 bytes
     buffer_generate_block_count(c2048,  BUFFER_2048);   // 2048 bytes
