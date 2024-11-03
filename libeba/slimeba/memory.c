@@ -1,8 +1,9 @@
 #include <errno.h>
 #include <stdint.h>
 
-#include "memory.c"
+#include "memory.h"
 #include "common/common.h"
+#include "jemalloc/jemalloc.h"
 
 /** Memory implementation of error handler */
 static void init_errhandler(int init_error)

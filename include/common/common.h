@@ -2,9 +2,40 @@
 #ifndef LIBEBA_COMMON
 #define LIBEBA_COMMON
 
+#include <limits.h>
+#include <assert.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <sys/epoll.h>
+#include <stdalign.h>
+//#include <sys/epoll.h>
+
+#ifdef __cplusplus
+exter "C" {
+#endif
+
+#ifndef typeof
+#define typeof __typeof__
+#endif
+
+#ifndef __cplusplus
+#ifndef asm
+#define asm __asm__
+#endif
+#endif
+
+#define EBA_IS_GNU 0
+#if defined __clang__ 
+#define EBA_CLANG
+#elif defined __GNUC__
+#define EBA_GCC
+#undef EBA_IS_GNU
+#define EBA_IS_GNU 1
+#endif
+#if EBA_IS_GNU
+#define GCC_VERSION (__GNUC__ * 1000 + __GNUC_MINOR__ + 100 + \
+                __GNUC_PATCHLEVEL__)
+
+
 
 /**
  * * * * Mechanisms and Macros for Runtime Efficiency * * * *
@@ -31,13 +62,63 @@
  * 
  */
 
-#define ALIGNMENT   8
+// for struct packed
+#define __eba_packed __attribute__((__packed__))
+
+// mark type if ont type-based alias type
+#define __eba_alias __attribute__((__may_alias__))
+
+// mark weak reference
+#define __eba_weak __attribute__((__weak__))
+
+// mark function pure
+#define __eba_pure __attribute__((pure))
+
+// force symbol generation
+#define __eba_used __attribute__((used))
+
+//  mark function unused
+#define __eba__unused __attribute__((__unused__))
+
 
 // advisible to use -fprofile-arcs to confirm assumptions
-#define unlikely(x) __builtin_expect(!!(x), 0);     // For linker; liklihood branch will be taken
+
+// branch prediction, mark branch unlikely to be taken
+#define unlikely(x) __builtin_expect(!!(x), 0);
+
+// branch prediction, mark branch likely to be taken
 #define likely(x)   __builint_expect(!!(x), 1);
 
-#define __eba_packed __attribute__((__packed__))
+/** Instruct compiler that return points to memory. */
+#if defined(EBA_GCC) || defined(EBA_CLANG)
+#define __eba_alloc_size(...)   \
+        __attribute__((alloc_size(__VA_ARGS__)))
+#else 
+#define __eba_alloc_size(...)
+#endif
+
+#if defined(EBA_GCC) || defined(EBA_CLANG)
+#define __eba_malloc __attribute__((__malloc__))
+#else
+#define __eba_malloc
+#endif
+
+#if defined(EBA_GCC) && defined(GCC_VERSION >= 110000)
+#define __eba_dealloc(dealloc, no)  \
+        __attribute__((malloc(dealloc, no)))
+#else
+#define __eba_dealloc(dealloc, no)
+#endif
+
+#define CACHE_LINE_SIZE     64
+#define N_CACHE_LINE_SIZE   128
+#define CACHE_LINE_SIZE_MIN 64
+
+#define __eba_aligned(a) __attribute__((__aligned__(a)))
+
+#define __eba_cache_aligned __eba_aligned(CACHE_LINE_SIZE)
+
+#define __eba_cache_min_aligned __eba_aligned(CACHE_LINE_SIZE_MIN)
 
 #define __slimeba_always_inline inline __attribute__((always_inline))
 
@@ -198,5 +279,9 @@ typedef uint64_t io_virtaddr_t;
 
 static void init_errhandler(int init_error);
 
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif //LIBEBA_COMMON

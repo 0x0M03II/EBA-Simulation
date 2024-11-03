@@ -1,13 +1,19 @@
+
+#ifndef SLIMEBA_MEM
+#define SLIMEBA_MEM
+
 #include <errno.h>
 #include <stdint.h>
-#include <pthread.h>
 #include <stddef.h>
 #include <string.h>
+#include <pthread.h>
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <linux/memfd.h>
 #include <linux/types.h>
 
+#include "common/comomon.h"
+#include "memory/eballoc.h"
 
 #ifdef __cplusplus
 #include <limits>
@@ -96,6 +102,21 @@ typedef struct {
  * This ensures the structs are in BSS memory to reserve Heap */
 buffer_table *bufftab;
 
+struct eba_zone {
+    char zone_name[EBA_MEMORY_ZONE_SIZE];
+    io_virtaddr_t io_virt_addr;
+    union {
+        void *addr;
+        uint64_t addr64
+    }
+
+struct __eba_cache_aligned _pool {
+
+    char pool_name[]
+}
+
 #ifdef __cplusplus
 }
 #endif
+
+#endif //SLIMEBA_MEM

@@ -35,6 +35,20 @@ extern "C" {
 #define RTE_PGSIZE_4G   (1ULL << 32)
 #define RTE_PGSIZE_16G  (1ULL << 34)
 
+
+#define EBA_MEMORY_ZONE_2MB            0x00000001
+#define EBA_MEMORY_ZONE_1GB            0x00000002
+#define EBA_MEMORY_ZONE_16MB           0x00000100
+#define EBA_MEMORY_ZONE_16GB           0x00000200
+#define EBA_MEMORY_ZONE_256KB          0x00010000
+#define EBA_MEMORY_ZONE_256MB          0x00020000
+#define EBA_MEMORY_ZONE_512MB          0x00040000
+#define EBA_MEMORY_ZONE_4GB            0x00080000
+#define EBA_MEMORY_ZONE_SIZE_HINT_ONLY 0x00000004
+#define EBA_MEMORY_ZONE_IOVA_CONTIG    0x00100000
+
+#define EBA_MEMORY_ZONE_SIZE    32
+
 struct segment {
     io_virtaddr_t io_virtaddr;
 
